@@ -1,0 +1,8 @@
+.App {
+  text-align: center;
+  margin: 0;
+  background: linear-gradient(to bottom right, #8a2be2, #87cefa);
+  padding: 0;
+  min-height: 100vh;
+  color: white; /* Set text color to contrast with the gradient */
+}
