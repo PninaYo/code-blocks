@@ -5,18 +5,23 @@ import AceEditor from "react-ace";
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/mode-javascript';
 import "ace-builds/src-noconflict/theme-textmate";
-
 import io from 'socket.io-client';
-
 
 function CodeBlockPage() {
     const { title } = useParams();
     const [codeBlock, setCodeBlock] = useState({});
     const [socket, setSocket] = useState(null);
-    const [isMentor, setIsMentor] = useState(false);
 
+    // set up socket connection for client
+    useEffect(() => {
+        const newSocket = io();
+        setSocket(newSocket);
+        return () => {
+            newSocket.disconnect();
+        };
+    }, []);
 
-
+    // get code block from server
     useEffect(() => {
         axios.get(`/api/getCodeBlock/${title}`)
             .then(response => {
@@ -29,6 +34,27 @@ function CodeBlockPage() {
             });
     }, [title]);
 
+    // listen for code block updates from server
+    useEffect(() => {
+        if (socket) {
+            socket.on('codeBlockUpdated', (updatedCodeBlock) => {
+                setCodeBlock(updatedCodeBlock);
+            });
+        }
+    }, [socket]);
+
+    // update code block changes and send code block updates to server
+    const handleCodeChange = (newCode) => {
+        const newCodeBlock = {
+            ...codeBlock,
+            code: newCode
+        }
+        setCodeBlock(newCodeBlock);
+        if (socket) {
+            socket.emit('updateCodeBlock', newCodeBlock);
+        }
+    };
+
     return (
         <div className="container">
             <div className="row d-flex justify-content-center">
@@ -36,7 +62,7 @@ function CodeBlockPage() {
                 <AceEditor
                     mode="javascript"
                     theme="textmate"
-                   // onChange={this.onChange}
+                    onChange={handleCodeChange}
                     fontSize={14}
                     value={codeBlock.code}
                     setOptions={{
