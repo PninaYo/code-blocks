@@ -1,9 +1,27 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import CodeBlockCard from "./CodeBlockCard";
 import {Outlet} from "react-router-dom";
 import './Card.css';
+import axios from "axios";
+import {BeatLoader} from "react-spinners";
 
-function Lobby({titles}) {
+function Lobby() {
+    const [titles, setTitles] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        axios.get('/api/getTitles')
+            .then(response => {
+                console.log('Response:', response.data.titles);
+                setTitles(response.data.titles);
+            })
+            .catch(error => {
+                console.error('Error fetching titles:', error);
+            })
+            .finally(()=> setIsLoading(false));
+    }, []);
+
     return (
         <>
             <div className="container">
@@ -19,6 +37,10 @@ function Lobby({titles}) {
                         </div>
                     </div>
                 </div>
+                {isLoading && <BeatLoader
+                    color="#36bed6"
+                    size={30}
+                />}
             </div>
             <Outlet />
         </>
