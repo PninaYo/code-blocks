@@ -18,11 +18,13 @@ function CodeBlockPage() {
     const [role, setRole] = useState(null);
     const [codeCorrect, setCodeCorrect] = useState(false);
 
+    let code = "";
+
     // get code block from server by title
     useEffect(() => {
         axios.get(`/api/getCodeBlock/${title}`)
             .then(response => {
-                const code = response.data.code;
+                code = response.data.code;
                 setCodeBlock({code:code , title:title});
             })
             .catch(error => {
@@ -32,10 +34,9 @@ function CodeBlockPage() {
 
     // set up socket connection
     useEffect(() => {
-        const newCodeBlock = JSON.parse(JSON.stringify(codeBlock))
         const newSocket = io({
             //for smile at first connect
-            query: codeBlock
+            query: {title:title},
         });
 
         // set the role - mentor or student
@@ -95,22 +96,25 @@ function CodeBlockPage() {
         <div className="container">
             <div className="mb-2">{role === 'mentor' ? 'Hi mentor, you can only read the code' : 'Hi student, you can edit the code'}</div>
             <div className="row d-flex justify-content-center">
-                {codeCorrect && <CorrectCode />}
-                <h3 className="display-6 mb-1">{title}</h3>
-                <AceEditor
-                    mode="javascript"
-                    theme="textmate"
-                    code={codeBlock.code}
-                    onChange={handleCodeChange}
-                    fontSize={14}
-                    value={codeBlock.code}
-                    setOptions={{
-                        useWorker: false
-                    }}
-                    readOnly={role === 'mentor'}
-                    className="rounded-3"
-                />
-                <BackToLobby />
+                <div className="col-md-6">
+                    {codeCorrect && <CorrectCode />}
+                    <h3 className="display-6 mb-1">{title}</h3>
+                    <AceEditor
+                        mode="javascript"
+                        theme="textmate"
+                        code={codeBlock.code}
+                        onChange={handleCodeChange}
+                        fontSize={14}
+                        value={codeBlock.code}
+                        setOptions={{
+                            useWorker: false
+                        }}
+                        readOnly={role === 'mentor'}
+                        width="100%"
+                        className="rounded-3"
+                    />
+                    <BackToLobby />
+                </div>
             </div>
         </div>
     );
