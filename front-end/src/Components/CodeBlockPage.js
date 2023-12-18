@@ -19,17 +19,13 @@ function CodeBlockPage() {
     useEffect(() => {
         axios.get(`/api/getCodeBlock/${title}`)
             .then(response => {
-                const newCode = response.data;
-                setCodeBlock(newCode);
-                if(newCode.code === newCode.correctCode){
-                    setCodeCorrect(true);
-                }
+                const code = response.data.code;
+                setCodeBlock({code});
             })
             .catch(error => {
                 console.error('Error fetching codeBlock:', error);
             });
     }, [title]);
-
     // set up socket connection
     useEffect(() => {
         const newSocket = io();

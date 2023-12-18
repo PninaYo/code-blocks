@@ -20,7 +20,10 @@ exports.getCodeBlock = async (req, res) => {
         if (!codeBlock) {
             return res.status(404).json({ message: 'Code block not found' });
         }
-        res.status(200).json(codeBlock);
+
+        // Send only code to the client
+        const { code } = codeBlock;
+        res.status(200).json({ code });
     } catch (error) {
         console.error('Error retrieving code block:', error);
         res.status(500).json({ message: 'Server Error' });

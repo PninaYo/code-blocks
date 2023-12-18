@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const CodeBlock = require('../models/codeBlock');
 const {initiateData} = require("../data/constants");
