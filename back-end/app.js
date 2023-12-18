@@ -27,6 +27,10 @@ let mentorSocket = null;
 // Socket.io connection handling
 io.on('connection', (socket) => {
 
+    // const codeBlock = JSON.parse(socket.handshake.query.codeblock);
+    // // emitCorrectness(socket, codeBlock);
+    // console.log(socket.handshake.query)
+
     // connect as mentor or student
     if (!mentorSocket) {
         mentorSocket = socket;
@@ -37,11 +41,10 @@ io.on('connection', (socket) => {
 
     // Update code block and notify clients
     socket.on('updateCodeBlock', async (data) => {
-
          if (socket !== mentorSocket) {
              // Real-time Update: Emit codeBlockUpdated event to updating socket and mentor's socket
-            socket.emit('codeBlockUpdated', data);
             mentorSocket.emit('codeBlockUpdated', data);
+            socket.emit('codeBlockUpdated', data);
             try {
                 // Code Block Update in Database
                 const codeBlock = await CodeBlock.findOneAndUpdate(
@@ -49,15 +52,10 @@ io.on('connection', (socket) => {
                     { $set: { code: data.code } },
                     { new: true }
                 );
-                // Check Code Correctness
-                if (codeBlock && codeBlock.isCorrect()) {
-                    socket.emit('codeCorrect');
-                    mentorSocket.emit('codeCorrect');
-                }
-                else if(codeBlock && !codeBlock.isCorrect()){
-                    socket.emit('codeNotCorrect');
-                    mentorSocket.emit('codeNotCorrect');
-                }
+
+                emitCorrectness(socket, codeBlock);
+                emitCorrectness(mentorSocket, codeBlock);
+
             } catch (err) {
                 console.error(err);
             }
@@ -73,21 +71,19 @@ io.on('connection', (socket) => {
     });
 });
 
+const emitCorrectness = (socket, codeBlock) => {
+    // Check Code Correctness
+    if (codeBlock && codeBlock.isCorrect()) {
+        socket.emit('codeCorrect');
+    }
+    else if(codeBlock && !codeBlock.isCorrect()){
+        socket.emit('codeNotCorrect');
+    }
+}
+
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
 module.exports = app;
-
-
-// Async Case Example
-async function fetchData() {
-    try {
-        const response = await fetch('https://api.example.com/data');
-        const data = await response.json();
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-fetchData();

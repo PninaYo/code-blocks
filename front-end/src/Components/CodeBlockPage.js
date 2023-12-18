@@ -20,15 +20,22 @@ function CodeBlockPage() {
         axios.get(`/api/getCodeBlock/${title}`)
             .then(response => {
                 const code = response.data.code;
-                setCodeBlock({code});
+                setCodeBlock({code:code , title:title});
             })
             .catch(error => {
                 console.error('Error fetching codeBlock:', error);
             });
-    }, [title]);
+    },[title])
+
+
     // set up socket connection
     useEffect(() => {
-        const newSocket = io();
+
+        const newSocket = io({
+            //for smile at first connect
+            query: codeBlock
+        });
+
         setSocket(newSocket);
 
         // set the role - mentor or student
@@ -89,7 +96,7 @@ function CodeBlockPage() {
             <div className="row d-flex justify-content-center">
                 {codeCorrect && (
                     <div className="col-md-4">
-                        <img src="/images/smile.png" style={{ width: '70px', height: '30px' }} alt="Smile" />
+                        <img src="/images/smile.png" alt="Smile" className="smile" />
                     </div>
                 )}
                 <h3 className="display-6 mb-1">{title}</h3>
