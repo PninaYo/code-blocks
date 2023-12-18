@@ -10,7 +10,7 @@ import CorrectCode from "./CorrectCode";
 import BackToLobby from "./BackToLobby";
 import "../Styles/BackToLobby.css";
 import "../Styles/CorrectCode.css";
-import config from "../config";
+
 
 function CodeBlockPage() {
     const { title } = useParams();

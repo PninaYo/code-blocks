@@ -4,7 +4,7 @@ import {Outlet} from "react-router-dom";
 import '../Styles/CodeBlockCard.css';
 import axios from "axios";
 import {BeatLoader} from "react-spinners";
-import config from "../config";
+
 
 function Lobby() {
     const [titles, setTitles] = useState([]);
