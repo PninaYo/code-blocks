@@ -9,8 +9,10 @@ function Lobby() {
     const [titles, setTitles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    // get titles of codes from server
     useEffect(() => {
         setIsLoading(true);
+        // Fetching titles when the component mounts
         axios.get('/api/getTitles')
             .then(response => {
                 console.log('Response:', response.data.titles);
@@ -19,13 +21,14 @@ function Lobby() {
             .catch(error => {
                 console.error('Error fetching titles:', error);
             })
+            // set loading icon
             .finally(()=> setIsLoading(false));
     }, []);
 
     return (
         <>
             <div className="container">
-                <h1 className="display-4 mb-4">Choose code block</h1>
+                <h2 className="display-4 mb-3">Choose code block</h2>
                 <div className="row d-flex justify-content-center ">
                     <div className="col-md-8">
                         <div className="row g-3">
@@ -46,5 +49,4 @@ function Lobby() {
         </>
     );
 }
-
 export default Lobby;

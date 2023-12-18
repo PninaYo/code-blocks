@@ -1,3 +1,10 @@
-.back:hover {
-    transform: scale(1.10); /* Scale the button on hover */
+.back img {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out; /* Add smooth transition effect */
+    height: 60px;
+    weight: 60px;
+}
+
+.back img:hover {
+    transform: scale(1.1); /* Scale the button on hover */
 }

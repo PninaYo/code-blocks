@@ -6,3 +6,7 @@
   min-height: 100vh;
   color: white; /* Set text color to contrast with the gradient */
 }
+.logo {
+  width: 175px;
+  height: 185px;
+}

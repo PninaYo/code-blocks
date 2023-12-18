@@ -8,14 +8,13 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <img src="/images/LOGO.svg" alt="logo" width="185" height="185"/>
+                <img className="logo" src="/images/LOGO.svg" alt="logo"/>
                 <Routes path="/">
-                    <Route path="/" element={<Lobby/>}/>
-                    <Route path="/codeBlockPage/:title" element={<CodeBlockPage/>}/>
+                <Route path="/" element={<Lobby/>}/>
+                <Route path="/codeBlockPage/:title" element={<CodeBlockPage/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
     );
 }
-
 export default App;
