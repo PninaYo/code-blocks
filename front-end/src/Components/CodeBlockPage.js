@@ -10,6 +10,7 @@ import CorrectCode from "./CorrectCode";
 import BackToLobby from "./BackToLobby";
 import "../Styles/BackToLobby.css";
 import "../Styles/CorrectCode.css";
+import config from "../config";
 
 function CodeBlockPage() {
     const { title } = useParams();
@@ -22,7 +23,7 @@ function CodeBlockPage() {
 
     // get code block from server by title
     useEffect(() => {
-        axios.get(`/api/getCodeBlock/${title}`)
+        axios.get(`https://code-blocks-z5h4.onrender.com/api/getCodeBlock/${title}`)
             .then(response => {
                 code = response.data.code;
                 setCodeBlock({code:code , title:title});
