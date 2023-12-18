@@ -38,7 +38,7 @@ function Lobby() {
                     </div>
                 </div>
                 {isLoading && <BeatLoader
-                    color="#36bed6"
+                    color="#693C9E"
                     size={30}
                 />}
             </div>

@@ -9,10 +9,16 @@ const codeBlockSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    comments: [{
-        type: String
-    }]
+    correctCode: {
+        type: String,
+        required: true
+    },
 });
+
+// Define isCorrect method within the schema
+codeBlockSchema.methods.isCorrect = function() {
+    return this.code === this.correctCode;
+};
 
 const CodeBlock = mongoose.model('CodeBlock', codeBlockSchema);
 module.exports = CodeBlock;

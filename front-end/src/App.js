@@ -8,7 +8,7 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <img src="/images/CODE.svg" alt="logo" width="185" height="185"/>
+                <img src="/images/LOGO.svg" alt="logo" width="185" height="185"/>
                 <Routes path="/">
                     <Route path="/" element={<Lobby/>}/>
                     <Route path="/codeBlockPage/:title" element={<CodeBlockPage/>}/>
