@@ -6,7 +6,7 @@ const {initiateData} = require("../data/constants");
 const connectDB = async () => {
     try {
         // Connect to MongoDB
-        const conn = await mongoose.connect('mongodb://localhost:27017/db', {
+        const conn = await mongoose.connect('mongodb://pnina:1234@localhost:27017/db', {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
