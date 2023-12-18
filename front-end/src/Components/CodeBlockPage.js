@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import axios from "axios";
 import AceEditor from "react-ace";
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/mode-javascript';
 import "ace-builds/src-noconflict/theme-textmate";
 import io from 'socket.io-client';
-import "./CodeBlockPage.css";
+import CorrectCode from "./CorrectCode";
+import BackToLobby from "./BackToLobby";
+import "../Styles/BackToLobby.css";
+import "../Styles/CorrectCode.css";
 
 function CodeBlockPage() {
     const { title } = useParams();
@@ -27,18 +30,16 @@ function CodeBlockPage() {
             });
     },[title])
 
-
     // set up socket connection
     useEffect(() => {
-
+        const newCodeBlock = JSON.parse(JSON.stringify(codeBlock))
         const newSocket = io({
             //for smile at first connect
             query: codeBlock
         });
 
-        setSocket(newSocket);
-
         // set the role - mentor or student
+        setSocket(newSocket);
         newSocket.on('role', (receivedRole) => {
             setRole(receivedRole);
         });
@@ -94,15 +95,12 @@ function CodeBlockPage() {
         <div className="container">
             <div className="mb-2">{role === 'mentor' ? 'Hi mentor, you can only read the code' : 'Hi student, you can edit the code'}</div>
             <div className="row d-flex justify-content-center">
-                {codeCorrect && (
-                    <div className="col-md-4">
-                        <img src="/images/smile.png" alt="Smile" className="smile" />
-                    </div>
-                )}
+                {codeCorrect && <CorrectCode />}
                 <h3 className="display-6 mb-1">{title}</h3>
                 <AceEditor
                     mode="javascript"
                     theme="textmate"
+                    code={codeBlock.code}
                     onChange={handleCodeChange}
                     fontSize={14}
                     value={codeBlock.code}
@@ -112,14 +110,9 @@ function CodeBlockPage() {
                     readOnly={role === 'mentor'}
                     className="rounded-3"
                 />
-                <div className="back">
-                    <Link to={`/`}>
-                        <img src="/images/backbutton.svg" className="position-absolute top-0 start-0 mt-2"></img>
-                    </Link>
-                </div>
+                <BackToLobby />
             </div>
         </div>
     );
 }
-
 export default CodeBlockPage;

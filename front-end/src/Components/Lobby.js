@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import CodeBlockCard from "./CodeBlockCard";
 import {Outlet} from "react-router-dom";
-import './Card.css';
+import '../Styles/CodeBlockCard.css';
 import axios from "axios";
 import {BeatLoader} from "react-spinners";
 
