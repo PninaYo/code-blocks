@@ -1,6 +1,6 @@
 const corsOptions = {
     origin: [
-        'https://codeblocks-c9c8.onrender.com', // Replace with your frontend URL
+        'https://code-blocks-wf09.onrender.com/',
         'http://localhost:3000',
         'http://127.0.0.1:3000',
     ],
