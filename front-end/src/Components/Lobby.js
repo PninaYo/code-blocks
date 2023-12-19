@@ -4,6 +4,7 @@ import {Outlet} from "react-router-dom";
 import '../Styles/CodeBlockCard.css';
 import axios from "axios";
 import {BeatLoader} from "react-spinners";
+import BASE_URL from "../config/config";
 
 
 function Lobby() {
@@ -14,7 +15,8 @@ function Lobby() {
     useEffect(() => {
         setIsLoading(true);
         // Fetching titles when the component mounts
-        axios.get(`https://code-blocks-z5h4.onrender.com/api/getTitles`)
+        axios.get(`${BASE_URL}/api/getTitles`)
+        //axios.get('/api/getTitles')
             .then(response => {
                 console.log('Response:', response.data.titles);
                 setTitles(response.data.titles);
