@@ -2,4 +2,4 @@
 /back-end/.idea
 /front-end/node_modules
 /front-end/.idea
-.env
+/back-end/.env
