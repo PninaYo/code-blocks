@@ -36,9 +36,10 @@ function CodeBlockPage() {
 
     // set up socket connection
     useEffect(() => {
-        const newSocket = io({
+        const newSocket = io(BASE_URL,{
             //for smile at first connect
             query: {title:title},
+            transports: ['websocket'],
         });
 
         // set the role - mentor or student
@@ -98,7 +99,7 @@ function CodeBlockPage() {
         <div className="container">
             <div className="mb-2">{role === 'mentor' ? 'Hi mentor, you can only read the code' : 'Hi student, you can edit the code'}</div>
             <div className="row d-flex justify-content-center">
-                <div className="col-md-6">
+                <div className="col-8 col-md-6">
                     {codeCorrect && <CorrectCode />}
                     <h3 className="display-6 mb-1">{title}</h3>
                     <AceEditor
