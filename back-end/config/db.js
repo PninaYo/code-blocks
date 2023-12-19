@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const CodeBlock = require('../models/codeBlock');
 const {initiateData} = require("../data/constants");
+const config = require("./config");
 
 // This function establishes a connection to MongoDB and initializes data if the collection is empty.
 const connectDB = async () => {
     try {
         // Connect to MongoDB
-        const conn = await mongoose.connect('mongodb://pninayo:1234p@localhost:27017/db', {
+        const conn = await mongoose.connect(config.dbURL, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
