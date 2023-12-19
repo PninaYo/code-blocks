@@ -12,7 +12,6 @@ import "../Styles/BackToLobby.css";
 import "../Styles/CorrectCode.css";
 import BASE_URL from "../config/config";
 
-
 function CodeBlockPage() {
     const { title } = useParams();
     const [codeBlock, setCodeBlock] = useState({});

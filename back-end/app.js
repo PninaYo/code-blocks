@@ -7,34 +7,22 @@ const apiRouter = require("./routes/api");
 const connectDB = require("./config/db");
 const { initSocket } = require('./socket');
 const cors = require('cors');
-const app = express();
+const corsOptions = require('./config/corsOptions');
 
+const app = express();
 const server = http.createServer(app);
+
+// Use CORS middleware with the options defined
+app.use(cors(corsOptions));
 
 // Connecting to the database
 connectDB();
-
-if (process.env.NODE_ENV === 'production') {
-    // Express serve static files on production environment
-    app.use(express.static(path.join(__dirname, 'public')));
-}
-else{
-// Configuring CORS
-    const corsOptions = {
-        // frontend url
-        origin: [
-            'http://127.0.0.1:3000',
-            'http://localhost:3000',
-        ],
-        credentials: true,
-    }
-    app.use(cors(corsOptions));
-}
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', apiRouter);
 
 // Initializing socket

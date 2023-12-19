@@ -1,24 +1,31 @@
 const mongoose = require('mongoose');
 const CodeBlock = require('../models/codeBlock');
 const {initiateData} = require("../data/constants");
-const config = require("./config");
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // This function establishes a connection to MongoDB and initializes data if the collection is empty.
 const connectDB = async () => {
     try {
-        // Connect to MongoDB
-        const conn = await mongoose.connect(config.dbURL, {
+        const conn = await mongoose.connect(MONGODB_URI, {
             useNewUrlParser: true,
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
         });
-        // Create and insert initial data if the collection is empty
-        const count = await CodeBlock.countDocuments();
-        if (count === 0) {
-            await CodeBlock.create(initiateData);
+        if (conn) {
+            console.log('MongoDB connected successfully');
+            // Check if CodeBlock collection is empty
+            const count = await CodeBlock.countDocuments();
+            if (count === 0) {
+                // Insert initial data if collection is empty
+                await CodeBlock.create(initiateData);
+                console.log('Initial data inserted successfully');
+            } else {
+                console.log('CodeBlock collection already has data');
+            }
+        } else {
+            console.error('MongoDB connection failed');
         }
     } catch (err) {
-        process.exit(1); // Exit process with failure
+        console.error('MongoDB Error:', err);
     }
 };
-
 module.exports = connectDB;
